@@ -7,7 +7,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<title>Output Page</title>
+		<title>Ihr Ergebnis</title>
 	</head>
 	<body>
 		Die größte eingegebene Zahl war: 
