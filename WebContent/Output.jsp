@@ -11,6 +11,6 @@
 	</head>
 	<body>
 		Die größte eingegebene Zahl war: 
-		<c:out value="${biggestNumber}" default="fehler"/>
+		<c:out value="${numbers.biggestNumber}" default="<fehler>" escapeXml="true"/>
 	</body>
 </html>

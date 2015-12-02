@@ -48,7 +48,7 @@ public class Controller extends HttpServlet {
 				
 		
 		if(checkForDuplicates()){
-			request.setAttribute("biggestNumber", number.getBiggestNumber());
+			request.setAttribute("numbers", number);
 			dispatcher = request.getRequestDispatcher("/Output.jsp");
 			dispatcher.forward(request, response);
 		}else {
