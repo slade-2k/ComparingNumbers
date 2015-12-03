@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import model.Numbers;
 
@@ -17,10 +18,10 @@ import model.Numbers;
 @WebServlet("/Controller")
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private Numbers number;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private RequestDispatcher dispatcher;
+	private Numbers number;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -38,33 +39,27 @@ public class Controller extends HttpServlet {
 			throws ServletException, IOException {
 		this.request = request;
 		this.response = response;
-
-		number = new Numbers();
+		
+	  	HttpSession sess = request.getSession(true);
+    	number = new Numbers();
+	    
 		try {
-			number.setNumber1(Double.parseDouble(request.getParameter("number1")));
-			number.setNumber2(Double.parseDouble(request.getParameter("number2")));
-			number.setNumber3(Double.parseDouble(request.getParameter("number3")));
+			number.setNumber1(Double.parseDouble(request.getParameter("Number1")));
+			number.setNumber2(Double.parseDouble(request.getParameter("Number2")));
+			number.setNumber3(Double.parseDouble(request.getParameter("Number3")));			
+			
+			sess.setAttribute("number", number);
 		} catch (Exception e) {
-			forwardError("Mindestens eine der Zahlen war kein Double-Wert");
+			errorRedirect("Mindestens eine der Zahlen war kein Double-Wert");
 		}
 
 		if (checkForDuplicates()) {
-			request.setAttribute("numbers", number);
+			//request.setAttribute("numbers", number);
 			dispatcher = request.getRequestDispatcher("/Output.jsp");
 			dispatcher.forward(request, response);
 		} else {
-			forwardError("Mindestens zwei der drei Zahlen haben den gleichen Wert.");
+			errorRedirect("Mindestens zwei der drei Zahlen haben den gleichen Wert.");
 		}
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 	private boolean checkForDuplicates() {
@@ -76,9 +71,9 @@ public class Controller extends HttpServlet {
 		}
 	}
 
-	private void forwardError(String errorMsg) throws ServletException, IOException {
-		dispatcher = request.getRequestDispatcher("/Startseite.jsp");
+	private void errorRedirect(String errorMsg) throws ServletException, IOException {
 		request.setAttribute("Fehler", errorMsg);
+		dispatcher = request.getRequestDispatcher("/Startseite.jsp");
 		dispatcher.forward(request, response);
 	}
 }

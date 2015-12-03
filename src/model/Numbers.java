@@ -6,6 +6,7 @@ public class Numbers {
 	private double number3 = 0;
 	private double biggestNumber = 0;
 
+	
 	public void setNumber1(double num) {
 		this.number1 = num;
 	}
